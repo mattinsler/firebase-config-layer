@@ -1,0 +1,37 @@
+{
+  "name": "firebase-env-var-layer",
+  "description": "Redis Environment Variable loader for layer-cake",
+  "version": "0.0.2",
+  "homepage": "https://github.com/mattinsler/firebase-env-var-layer",
+  "author": {
+    "name": "Matt Insler",
+    "email": "matt.insler@gmail.com",
+    "url": "http://www.mattinsler.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mattinsler/firebase-env-var-layer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mattinsler/firebase-env-var-layer/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/mattinsler/firebase-env-var-layer/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "dist/firebase-config-layer",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "dependencies": {
+    "firebase": "~0.6.22"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-clean": "~0.5.0"
+  },
+  "keywords": []
+}
