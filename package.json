@@ -1,8 +1,8 @@
 {
-  "name": "firebase-env-var-layer",
+  "name": "firebase-config-layer",
   "description": "Firebase config loader for layer-cake",
   "version": "0.0.1",
-  "homepage": "https://github.com/mattinsler/firebase-env-var-layer",
+  "homepage": "https://github.com/mattinsler/firebase-config-layer",
   "author": {
     "name": "Matt Insler",
     "email": "matt.insler@gmail.com",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mattinsler/firebase-env-var-layer.git"
+    "url": "git://github.com/mattinsler/firebase-config-layer.git"
   },
   "bugs": {
-    "url": "https://github.com/mattinsler/firebase-env-var-layer/issues"
+    "url": "https://github.com/mattinsler/firebase-config-layer/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/mattinsler/firebase-env-var-layer/blob/master/LICENSE-MIT"
+      "url": "https://github.com/mattinsler/firebase-config-layer/blob/master/LICENSE-MIT"
     }
   ],
   "main": "dist/firebase-config-layer",
