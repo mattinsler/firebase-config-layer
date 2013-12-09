@@ -1,7 +1,7 @@
 {
   "name": "firebase-config-layer",
   "description": "Firebase config loader for layer-cake",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://github.com/mattinsler/firebase-config-layer",
   "author": {
     "name": "Matt Insler",

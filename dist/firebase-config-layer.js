@@ -58,7 +58,9 @@
                 }
                 break;
               case 'exec':
-                return vm.runInNewContext(str, {});
+                return vm.runInNewContext(str, {
+                  process: process
+                });
             }
           })();
           res = res.slice(0, c.start) + o;

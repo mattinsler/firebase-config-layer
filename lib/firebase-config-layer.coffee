@@ -31,7 +31,7 @@ resolve_config_value = (config, value) ->
             cfg_v = get_value(config, str)
             if cfg_v? then resolve_config_value(config, cfg_v) else process.env[str]
           when 'exec'
-            vm.runInNewContext(str, {})
+            vm.runInNewContext(str, process: process)
         
         res = res.slice(0, c.start) + o
     
