@@ -1,7 +1,7 @@
 {
   "name": "firebase-env-var-layer",
-  "description": "Redis Environment Variable loader for layer-cake",
-  "version": "0.0.2",
+  "description": "Firebase config loader for layer-cake",
+  "version": "0.0.1",
   "homepage": "https://github.com/mattinsler/firebase-env-var-layer",
   "author": {
     "name": "Matt Insler",
