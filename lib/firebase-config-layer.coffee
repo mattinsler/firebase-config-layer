@@ -39,7 +39,8 @@ resolve_config_value = (config, value) ->
   
   parse(value)
 
-resolve_config = (config, root_config = {}) ->
+resolve_config = (config, root_config) ->
+  root_config ?= config
   return config if Array.isArray(config)
   return resolve_config_value(root_config, config) if typeof config is 'string'
   return config unless typeof config is 'object'

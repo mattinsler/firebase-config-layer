@@ -71,7 +71,7 @@
 
   resolve_config = function(config, root_config) {
     if (root_config == null) {
-      root_config = {};
+      root_config = config;
     }
     if (Array.isArray(config)) {
       return config;
