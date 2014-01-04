@@ -1,5 +1,7 @@
 vm = require 'vm'
+fs = require 'fs'
 URL = require 'url'
+path = require 'path'
 
 get_value = (obj, key) ->
   for k in key.split('.')
@@ -103,47 +105,31 @@ module.exports.environments =
         cb(null, Object.keys(ref.val() or {}))
 
 module.exports.environment = (env) ->
-  {
-    get: (key, should_resolve, cb) ->
+  get_data = (cb) ->
+    if env is 'local'
+      config_file = path.join(process.cwd(), 'config.json')
+      return cb(new Error('Could not find ' + config_file)) unless fs.existsSync(config_file)
+      
+      try
+        cb(null, JSON.parse(fs.readFileSync(config_file).toString()))
+      catch err
+        cb(err)
+    
+    else
       module.exports.get_client (err, client) ->
         return cb(err) if err?
         
-        # get(callback)
-        if typeof key is 'function'
-          client.child(env).once 'value', (ref) ->
-            key(null, ref.val())
+        client.child(env).once 'value', (ref) ->
+          cb(null, ref.val())
+  
+  {
+    get: (should_resolve, cb) ->
+      if typeof should_resolve is 'function'
+        cb = should_resolve
+        should_resolve = false
       
-        # get(should_resolve, callback)
-        else if typeof key is 'boolean' and typeof should_resolve is 'function'
-          module.exports.environment(env).get (err, config) ->
-            return should_resolve(err) if err?
-            return should_resolve(null, config) if key is false
-            
-            should_resolve(null, resolve_config(config))
-      
-        # # get(key, callback)
-        # else if typeof key is 'string' and typeof should_resolve is 'function'
-        #   module.exports.client.hget(env, key, should_resolve)
-        #       
-        # # get(key, should_resolve, callback)
-        # else if typeof key is 'string' and typeof should_resolve is 'boolean' and typeof cb is 'function'
-        #   return module.exports.client.hget(env, key, cb) if should_resolve is false
-        #   @get true, (err, config) ->
-        #     return cb(err) if err?
-        #     cb(null, config[key])
-    
-    # set: (k, v, cb) ->
-    #   module.exports.get_client (err, client) ->
-    #     return cb(err) if err?
-    #     
-    #     # set({key: value}, callback)
-    #     if typeof k is 'object' and typeof v is 'function' and not cb?
-    #       module.exports.client.hmset(env, k, v)
-    #     
-    #     # set(key, value, callback)
-    #     else if typeof k is 'string' and v? and typeof cb is 'function'
-    #       module.exports.client.hset(env, k, v, cb)
-    # 
-    # remove: (key, cb) ->
-    #   module.exports.client.hdel(env, key, cb)
+      get_data (err, config) ->
+        return cb(err) if err?
+        return cb(null, config) if should_resolve is false
+        cb(null, resolve_config(config))
   }

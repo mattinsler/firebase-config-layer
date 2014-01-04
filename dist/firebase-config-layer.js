@@ -1,9 +1,13 @@
 (function() {
-  var URL, cached_client, config_command, config_from_firebase, get_value, resolve_config, resolve_config_value, vm;
+  var URL, cached_client, config_command, config_from_firebase, fs, get_value, path, resolve_config, resolve_config_value, vm;
 
   vm = require('vm');
 
+  fs = require('fs');
+
   URL = require('url');
+
+  path = require('path');
 
   get_value = function(obj, key) {
     var k, _i, _len, _ref;
@@ -162,27 +166,45 @@
   };
 
   module.exports.environment = function(env) {
-    return {
-      get: function(key, should_resolve, cb) {
+    var get_data;
+    get_data = function(cb) {
+      var config_file, err;
+      if (env === 'local') {
+        config_file = path.join(process.cwd(), 'config.json');
+        if (!fs.existsSync(config_file)) {
+          return cb(new Error('Could not find ' + config_file));
+        }
+        try {
+          return cb(null, JSON.parse(fs.readFileSync(config_file).toString()));
+        } catch (_error) {
+          err = _error;
+          return cb(err);
+        }
+      } else {
         return module.exports.get_client(function(err, client) {
           if (err != null) {
             return cb(err);
           }
-          if (typeof key === 'function') {
-            return client.child(env).once('value', function(ref) {
-              return key(null, ref.val());
-            });
-          } else if (typeof key === 'boolean' && typeof should_resolve === 'function') {
-            return module.exports.environment(env).get(function(err, config) {
-              if (err != null) {
-                return should_resolve(err);
-              }
-              if (key === false) {
-                return should_resolve(null, config);
-              }
-              return should_resolve(null, resolve_config(config));
-            });
+          return client.child(env).once('value', function(ref) {
+            return cb(null, ref.val());
+          });
+        });
+      }
+    };
+    return {
+      get: function(should_resolve, cb) {
+        if (typeof should_resolve === 'function') {
+          cb = should_resolve;
+          should_resolve = false;
+        }
+        return get_data(function(err, config) {
+          if (err != null) {
+            return cb(err);
           }
+          if (should_resolve === false) {
+            return cb(null, config);
+          }
+          return cb(null, resolve_config(config));
         });
       }
     };
